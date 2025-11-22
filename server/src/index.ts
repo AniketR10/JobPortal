@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
+import jobRoutes from './routes/jobRoutes.js'
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 // routes
 app.use('/api/auth', authRoutes);
+app.use('/api/jobs', jobRoutes);
 
 // db connect
 mongoose.connect(process.env.MONGO_URI as string)
@@ -22,7 +24,7 @@ mongoose.connect(process.env.MONGO_URI as string)
     const dbname = mongoose.connection.name;
     console.log('dbName: ', dbname);
 })
-.catch((err) => console.error('mongodb connection error!'))
+.catch((err) => console.error('mongodb connection error!', err))
 
 app.get('/', (req, res) => {
     res.send('job portal api is running')
