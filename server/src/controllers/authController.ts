@@ -38,6 +38,10 @@ export const register = async (req: Request, res: Response) => {
 // login user
 export const login = async (req: Request, res: Response) => {
     try {
+        console.log(" login req received!");
+        console.log(" body:", req.body);
+      console.log(" email type:", typeof req.body.email);
+
         const {email, password} = req.body;
 
         if (!email || !password) {
