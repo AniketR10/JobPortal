@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import api from '@/lib/axios';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button'; 
 
 export default function EmployerDashboard() {
+  const navigate = useNavigate(); 
   const [jobs, setJobs] = useState<any[]>([]);
   const [applications, setApplications] = useState<any[]>([]);
   const [selectedJob, setSelectedJob] = useState<string>('');
@@ -52,7 +55,15 @@ export default function EmployerDashboard() {
 
   return (
     <div className="container mx-auto p-6 max-w-6xl">
-      <h1 className="text-3xl font-bold mb-6">Employer Dashboard</h1>
+     
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Employer Dashboard</h1>
+        
+       
+        <Button onClick={() => navigate('/employer/jobs/new')}>
+          + Post New Job
+        </Button>
+      </div>
 
       <div className="grid gap-6">
         <Card>
@@ -65,9 +76,13 @@ export default function EmployerDashboard() {
               value={selectedJob}
               onChange={(e) => setSelectedJob(e.target.value)}
             >
-              {jobs.map(job => (
-                <option key={job._id} value={job._id}>{job.title}</option>
-              ))}
+              {jobs.length > 0 ? (
+                jobs.map(job => (
+                  <option key={job._id} value={job._id}>{job.title}</option>
+                ))
+              ) : (
+                <option disabled>No jobs posted yet</option>
+              )}
             </select>
           </CardContent>
         </Card>
@@ -95,8 +110,8 @@ export default function EmployerDashboard() {
                   applications.map((app) => (
                     <TableRow key={app._id}>
                       <TableCell>
-                        <div className="font-medium">{app.candidateId.name}</div>
-                        <div className="text-sm text-slate-500">{app.candidateId.email}</div>
+                        <div className="font-medium">{app.candidateId?.name || "Unknown"}</div>
+                        <div className="text-sm text-slate-500">{app.candidateId?.email || "No Email"}</div>
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline">{app.status}</Badge>
@@ -111,6 +126,7 @@ export default function EmployerDashboard() {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="applied">Applied</SelectItem>
+                            <SelectItem value="screening">Screening</SelectItem>
                             <SelectItem value="interview">Interview</SelectItem>
                             <SelectItem value="offer">Offer</SelectItem>
                             <SelectItem value="rejected">Rejected</SelectItem>

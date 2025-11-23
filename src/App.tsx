@@ -9,6 +9,7 @@ import RegisterPage from './pages/RegisterPage';
 import CandidateDashboard from './pages/CandidateDashboard';
 import JobDetailsPage from './pages/JobDetailspage';
 import EmployerDashboard from './pages/EmployerDashboard';
+import CreateJobPage from './pages/CreateJobPage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/jobs/:id" element={<JobDetailsPage />} />
           <Route path="/dashboard" element={<CandidateDashboard />} />
           <Route path="/employer/dashboard" element={<EmployerDashboard />} />
+          <Route path="/employer/jobs/new" element={<CreateJobPage />} />
         </Routes>
       </Router>
       </AuthProvider>
