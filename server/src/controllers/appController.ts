@@ -50,7 +50,7 @@ export const applyJob = async (req:AuthRequest, res: Response) => {
         // notify candidate
         const notifyCandidate = await User.findById(req.user.id);
         if(notifyCandidate){
-            await sendEmail(
+             sendEmail(
                 notifyCandidate.email,
                 'Application Received',
                 `You have successfully applied for the job. Good luck!`,
@@ -62,7 +62,7 @@ export const applyJob = async (req:AuthRequest, res: Response) => {
         if(job && job.employerId) {
             const employerEmail = (job.employerId as any).email;
             if(employerEmail){
-                await sendEmail(
+                 sendEmail(
                     employerEmail,
                     'New Candidate Applied',
                     `A new candidate has applied for the position: ${job.title}`
@@ -89,12 +89,25 @@ export const getApplications = async (req: AuthRequest, res: Response) => {
 export const updateStatus = async (req: AuthRequest, res: Response) => {
     try {
         const {status} = req.body;
-        const application = await Application.findById(req.params.id);
+        const application = await Application.findById(req.params.id)
+        .populate('candidateId')
+        .populate('jobId');
         if(!application) return res.status(404).json({ message: 'Application not found' });
 
         // more work to be done here
         application.status = status;
         await application.save();
+
+        const candidate = application.candidateId as any;
+        const job = application.jobId as any;
+
+        if(candidate && candidate.email){
+            await sendEmail(
+                candidate.email,
+                'Application Status Update',
+                `Your application for ${job.title} has moved to: ${status.toUpperCase()}.`
+            );
+        }
         res.json(application);
     } catch(err){
         res.status(500).json({ message: 'unable to update the status: ', err });
