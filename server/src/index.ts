@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
-import jobRoutes from './routes/jobRoutes.js'
+import jobRoutes from './routes/jobRoutes.js';
+import appRoutes from './routes/appRoutes.js';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 // routes
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', appRoutes);
 
 // db connect
 mongoose.connect(process.env.MONGO_URI as string)
