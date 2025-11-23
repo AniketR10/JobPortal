@@ -15,7 +15,7 @@ export const createJob = async (req: AuthRequest, res: Response) => {
 
 export const getJobs = async (req: AuthRequest, res: Response) => {
     try {
-        const {search, location, type} = req.query;
+        const {search, location, type, page = 1, limit = 10} = req.query;
         const query: any = {status: 'open'};
         if(search){
             query.$text = {$search: search as string};
@@ -26,10 +26,28 @@ export const getJobs = async (req: AuthRequest, res: Response) => {
         if(type){
             query.type = type;
         }
+
+        //pagination
+        const pageNum = parseInt(page as string) || 1;
+        const limitNum = parseInt(limit as string) || 10;
+        const skip = (pageNum -1) * limitNum;
+
+        const totalJobs = await Job.countDocuments(query);
+
         const jobs = await Job.find(query)
       .populate('employerId', 'name company') // Show company name
-      .sort({ createdAt: -1 }); // Newest first
-      res.json(jobs);
+      .sort({ createdAt: -1 }) // Newest first
+      .skip(skip)
+      .limit(limitNum);
+
+       res.json({
+        jobs,
+        pagination: {
+            total: totalJobs,
+            page: pageNum,
+            pages: Math.ceil(totalJobs/limitNum),
+        }
+     });
     } catch(e) {
         res.status(500).json({message: 'Server Error', e});
     }
