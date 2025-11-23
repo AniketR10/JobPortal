@@ -7,6 +7,9 @@ import { resolve } from 'path';
 import { rejects } from 'assert';
 import { error } from 'console';
 import { stat } from 'fs';
+import { sendEmail } from '../utils/emailService.js';
+import User from '../models/User.js';
+import Job from '../models/Job.js';
 
 //helper
 const cloudinaryUpload = (buffer: Buffer): Promise<any> => {
@@ -43,6 +46,29 @@ export const applyJob = async (req:AuthRequest, res: Response) => {
             resumePublicId: uploadToCloud.public_id,
             status: 'applied'
         });
+
+        // notify candidate
+        const notifyCandidate = await User.findById(req.user.id);
+        if(notifyCandidate){
+            await sendEmail(
+                notifyCandidate.email,
+                'Application Received',
+                `You have successfully applied for the job. Good luck!`,
+            )
+        }
+
+        // notify employer
+        const job = await Job.findById(jobId).populate('employerId');
+        if(job && job.employerId) {
+            const employerEmail = (job.employerId as any).email;
+            if(employerEmail){
+                await sendEmail(
+                    employerEmail,
+                    'New Candidate Applied',
+                    `A new candidate has applied for the position: ${job.title}`
+                )
+            }
+        }
 
         res.status(201).json({message: 'Successfully applied', application})
     } catch(err) {
