@@ -1,14 +1,22 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css'
-import LandingPage from './pages/landingPage';
+import LandingPage from './pages/LandingPage';
+import Navbar from './components/Navbar';
+import JobsPage from './pages/JobsPage';
+import { AuthProvider } from './context/authContext';
 
 function App() {
   return (
+    <AuthProvider>
       <Router>
+        <Navbar/>
         <Routes>
           <Route path='/' element={<LandingPage/>} />
+          <Route path="/jobs" element={<JobsPage />} />
+          
         </Routes>
       </Router>
+      </AuthProvider>
   )
 }
 
