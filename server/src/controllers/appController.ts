@@ -6,6 +6,7 @@ import { buffer } from 'stream/consumers';
 import { resolve } from 'path';
 import { rejects } from 'assert';
 import { error } from 'console';
+import { stat } from 'fs';
 
 //helper
 const cloudinaryUpload = (buffer: Buffer): Promise<any> => {
@@ -56,5 +57,33 @@ export const getApplications = async (req: AuthRequest, res: Response) => {
         res.json(data);
     } catch(err) {
         res.status(500).json({ message: 'error finding your applcations' });
+    }
+}
+
+export const updateStatus = async (req: AuthRequest, res: Response) => {
+    try {
+        const {status} = req.body;
+        const application = await Application.findById(req.params.id);
+        if(!application) return res.status(404).json({ message: 'Application not found' });
+
+        // more work to be done here
+        application.status = status;
+        await application.save();
+        res.json(application);
+    } catch(err){
+        res.status(500).json({ message: 'unable to update the status: ', err });
+    }
+}
+
+export const withdrawApplication = async (req: AuthRequest, res: Response) => {
+    try {
+        const application = await Application.findOne({_id: req.params.id, candidateId: req.user.id});
+        if(!application) return res.status(404).json({ message: 'Application not found' });
+
+        //delete
+        await application.deleteOne();
+        res.json({message: 'Application withdrawn'});
+    } catch(err){
+        res.status(500).json({ message: 'unable to withdraw the application' });
     }
 }

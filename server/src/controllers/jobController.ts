@@ -15,8 +15,21 @@ export const createJob = async (req: AuthRequest, res: Response) => {
 
 export const getJobs = async (req: AuthRequest, res: Response) => {
     try {
-        const jobs = await Job.find({status: 'open'}).populate('employerId', 'name company');
-        res.json(jobs);
+        const {search, location, type} = req.query;
+        const query: any = {status: 'open'};
+        if(search){
+            query.$text = {$search: search as string};
+        }
+        if(location){
+            query.location = {$regex: location, $options: 'i'};
+        }
+        if(type){
+            query.type = type;
+        }
+        const jobs = await Job.find(query)
+      .populate('employerId', 'name company') // Show company name
+      .sort({ createdAt: -1 }); // Newest first
+      res.json(jobs);
     } catch(e) {
         res.status(500).json({message: 'Server Error', e});
     }
@@ -47,3 +60,58 @@ export const getJobApplications = async (req: AuthRequest, res: Response) => {
         res.status(500).json({message: 'Error', err});
     }
 }
+
+export const getEmployerJobs = async (req: AuthRequest, res: Response) => {
+    try {
+        const jobs = await Job.find({employerId: req.user.id});
+        res.json(jobs);
+    } catch(err) {
+        res.status(500).json({ message: 'unable to get Jobs', err });
+    }
+};
+
+export const updateJobs = async (req: AuthRequest, res: Response) => {
+    try {
+        const job = await Job.findById(req.params.id);
+        if (!job) return res.status(404).json({ message: 'Job not found' });
+        
+        if (job.employerId.toString() !== req.user.id) {
+            return res.status(401).json({ message: 'Not authorized' });
+        }
+
+        const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        res.json(updatedJob);
+    } catch(err){
+        res.status(500).json({ message: 'unable to update jobs: ', err });
+    }
+}
+
+export const deleteJob = async (req: AuthRequest, res: Response) => {
+    try {
+        const job = await Job.findById(req.params.id);
+        if(!job) return res.status(404).json({ message: 'Job not found' });
+
+        if(job.employerId.toString() !== req.user.id) {
+            return res.status(401).json({ message: 'Not authorized' });
+        }
+
+        await job.deleteOne();
+        res.json({ message: 'Job removed' });
+    } catch(err) {
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+export const getJobById = async (req: AuthRequest, res: Response) => {
+    try {
+        const job = await Job.findById(req.params.id).populate('employerId', 'name company');
+        if (!job) {
+        return res.status(404).json({ message: 'Job not found' });
+        }
+        res.json(job); 
+    } catch(err) {
+        res.status(500).json({ message: 'server error', err });
+    }
+}
+
+
