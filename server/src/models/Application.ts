@@ -7,7 +7,7 @@ const ApplicationSchema = new mongoose.Schema({
   resumePublicId: {type: String, required: true},
   status: { 
     type: String, 
-    enum: ['applied', 'screening', 'interview', 'offer', 'rejected'], 
+    enum: ['applied', 'screening', 'interview', 'offer', 'rejected', 'withdrawn'], 
     default: 'applied' 
   },
 }, { timestamps: true });

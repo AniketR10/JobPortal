@@ -57,7 +57,11 @@ export const getJobApplications = async (req: AuthRequest, res: Response) => {
     try {
         const jobId = req.params.id as string;
 
-        const applications = await Application.find({jobId}).populate('candidateId', 'name email');
+        const applications = await Application.find({
+            jobId,
+            status: {$ne: 'withdrawn'}
+
+        }).populate('candidateId', 'name email');
         const applicationswithUrls = applications.map((app: any) => {
             const appObj = app.toObject();
 

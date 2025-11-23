@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '@/lib/axios';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface Application {
   _id: string;
@@ -38,6 +39,19 @@ export default function CandidateDashboard() {
     fetchApplications();
   }, []);
 
+    const handleWithdraw = async (appId: string) => {
+    if (!confirm("Are you sure you want to withdraw this application?")) return;
+    
+    try {
+      await api.put(`/applications/${appId}/withdraw`);
+      // Remove from UI immediately
+      setApplications(prev => prev.filter(app => app._id !== appId));
+      alert("Application withdrawn successfully.");
+    } catch (error) {
+      alert("Failed to withdraw application.");
+    }
+  };
+
   const getAppsByStatus = (status: string) => {
     return applications.filter(app => app.status === status);
   };
@@ -70,9 +84,24 @@ export default function CandidateDashboard() {
                     <div className="text-xs text-slate-400 mt-2">
                       Applied: {new Date(app.createdAt).toLocaleDateString()}
                     </div>
+                    {(app.status === 'applied' || app.status === 'screening') && (
+                      <Button 
+                        variant="destructive" 
+                        size="sm" 
+                        className="w-full h-7 text-xs text-gray-50 
+                                 transition-all 
+                                bg-red-500 hover:bg-red-700 hover:cursor-pointer"
+                        onClick={() => handleWithdraw(app._id)}
+                      >
+                        Withdraw Application
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               ))}
+              {getAppsByStatus(col.id).length === 0 && (
+                <div className="text-center text-slate-400 text-xs italic py-4">Empty</div>
+              )}
             </div>
           </div>
         ))}
