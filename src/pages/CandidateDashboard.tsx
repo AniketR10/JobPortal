@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '@/lib/axios';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ interface Application {
   _id: string;
   status: string;
   jobId: {
+    _id: string;
     title: string;
     company: string;
   };
@@ -44,7 +46,6 @@ export default function CandidateDashboard() {
     
     try {
       await api.put(`/applications/${appId}/withdraw`);
-      // Remove from UI immediately
       setApplications(prev => prev.filter(app => app._id !== appId));
       alert("Application withdrawn successfully.");
     } catch (error) {
@@ -71,7 +72,11 @@ export default function CandidateDashboard() {
             
             <div className="space-y-3">
               {getAppsByStatus(col.id).map((app) => (
-                <Card key={app._id} className="shadow-sm hover:shadow-md transition-all bg-white">
+                <Card key={app._id} className=" relative shadow-sm bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:bg-slate-100">
+                  <Link 
+                    to={`/jobs/${app.jobId._id}`} 
+                    className="absolute inset-0 z-10"
+                  />
                   <CardHeader className="p-4 pb-2">
                     <CardTitle className="text-base font-bold text-slate-800">
                       {app.jobId?.title || "Unknown Job"}
