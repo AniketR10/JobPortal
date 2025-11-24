@@ -137,3 +137,26 @@ export const withdrawApplication = async (req: AuthRequest, res: Response) => {
         res.status(500).json({ message: 'unable to withdraw the application' });
     }
 }
+
+export const getEmployerApplications = async (req: AuthRequest, res: Response) => {
+    try {
+       
+        const jobs = await Job.find({ employerId: req.user.id }).select("_id");
+
+        if (jobs.length === 0) {
+            return res.json([]); 
+        }
+
+        const jobIds = jobs.map(j => j._id);
+
+       
+        const applications = await Application.find({ jobId: { $in: jobIds } })
+            .populate("candidateId", "name email")
+            .populate("jobId", "title");
+
+        res.json(applications);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error while fetching employer applications" });
+    }
+};

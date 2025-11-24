@@ -11,7 +11,7 @@ export default function EmployerDashboard() {
   const navigate = useNavigate(); 
   const [jobs, setJobs] = useState<any[]>([]);
   const [applications, setApplications] = useState<any[]>([]);
-  const [selectedJob, setSelectedJob] = useState<string>('');
+  const [selectedJob, setSelectedJob] = useState<string>('all');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +19,6 @@ export default function EmployerDashboard() {
       try {
         const { data } = await api.get('/jobs/employer/jobs');
         setJobs(data);
-        if (data.length > 0) setSelectedJob(data[0]._id);
       } catch (error) {
         console.error("Error fetching jobs", error);
       } finally {
@@ -30,15 +29,24 @@ export default function EmployerDashboard() {
   }, []);
 
   useEffect(() => {
-    if (!selectedJob) return;
     const fetchApps = async () => {
+      setLoading(true);
       try {
-        const { data } = await api.get(`/jobs/${selectedJob}/applications`);
+        let url = '/applications/employer'; 
+        
+        if (selectedJob && selectedJob !== 'all') {
+          url = `/jobs/${selectedJob}/applications`;
+        }
+
+        const { data } = await api.get(url);
         setApplications(data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
+    
     fetchApps();
   }, [selectedJob]);
 
@@ -73,10 +81,11 @@ export default function EmployerDashboard() {
           </CardHeader>
           <CardContent>
             <select 
-              className="w-full md:w-[300px] p-2 border rounded-md bg-white"
+              className="w-full md:w-[300px] p-2 border rounded-md bg-neutral-200"
               value={selectedJob}
               onChange={(e) => setSelectedJob(e.target.value)}
             >
+              <option value="all">All Applications</option>
               {jobs.length > 0 ? (
                 jobs.map(job => (
                   <option key={job._id} value={job._id}>{job.title}</option>
@@ -116,6 +125,9 @@ export default function EmployerDashboard() {
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline">{app.status}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <span className="font-medium text-slate-700">{app.jobId?.title || "Unknown Job"}</span>
                       </TableCell>
                       <TableCell>
                         <a href={app.resumeUrl} target="_blank" className="text-blue-600 hover:underline">View PDF</a>
