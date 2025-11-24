@@ -18,7 +18,8 @@ A full-stack job board platform featuring role-based access control, file upload
  Employer Dashboard
 <img width="1906" height="886" alt="Pasted image (16)" src="https://github.com/user-attachments/assets/94e4aee8-2321-4a31-9cc4-ef511f956e02" />
 Jobs Posted by Employer
-
+<img width="1906" height="886" alt="image" src="https://github.com/user-attachments/assets/f41c9bfd-98b1-48e2-b902-1c686529183b" />
+Job Post form
 
 
 ## 🚀 **Features**
