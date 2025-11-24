@@ -5,10 +5,7 @@ import { checkedUpload } from '../middleware/uploadMiddleware.js';
 
 const router = express.Router();
 
-// POST /api/applications
 router.post('/', protect, authorize(['candidate']), checkedUpload.single('resume'), applyJob);
-
-// GET /api/applications/my
 router.get('/my', protect, authorize(['candidate']), getApplications);
 router.put('/:id/status', protect, authorize(['employer']), updateStatus);
 router.put('/:id/withdraw', protect, authorize(['candidate']), withdrawApplication);

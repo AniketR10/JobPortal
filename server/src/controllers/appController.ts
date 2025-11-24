@@ -94,7 +94,18 @@ export const updateStatus = async (req: AuthRequest, res: Response) => {
         .populate('jobId');
         if(!application) return res.status(404).json({ message: 'Application not found' });
 
-        // more work to be done here
+         const statusOrder = ['applied', 'screening', 'interview', 'offer', 'rejected'];
+        
+        const currentStatus = application.status as string;
+        const currentIndex = statusOrder.indexOf(currentStatus);
+        const newIndex = statusOrder.indexOf(status);
+
+        if (newIndex < currentIndex && (currentStatus === 'rejected' || currentStatus === 'offer')) {
+            return res.status(400).json({ 
+                message: `Warning: You cannot revert the status from '${currentStatus}' back to '${status}'.` 
+            });
+        }
+
         application.status = status;
         await application.save();
 

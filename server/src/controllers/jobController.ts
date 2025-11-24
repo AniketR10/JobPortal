@@ -38,8 +38,8 @@ export const getJobs = async (req: AuthRequest, res: Response) => {
         const totalJobs = await Job.countDocuments(query);
 
         const jobs = await Job.find(query)
-      .populate('employerId', 'name company') // Show company name
-      .sort({ createdAt: -1 }) // Newest first
+      .populate('employerId', 'name company') // show company name
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limitNum);
 
@@ -68,7 +68,7 @@ export const getJobApplications = async (req: AuthRequest, res: Response) => {
         const applicationswithUrls = applications.map((app: any) => {
             const appObj = app.toObject();
 
-            if(app.resumePublicId) { // generate link
+            if(app.resumePublicId) {
                 appObj.resumeUrl = cloudinary.utils.url(app.resumePublicId, {
                     resource_type: 'raw',
                     type: 'private',

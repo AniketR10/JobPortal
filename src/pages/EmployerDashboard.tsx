@@ -49,7 +49,8 @@ export default function EmployerDashboard() {
         apps.map(app => app._id === appId ? { ...app, status: newStatus } : app)
       );
     } catch (error) {
-      alert("Failed to update status");
+      alert((error as any).response?.data?.message || "Failed to update status");
+       window.location.reload(); 
     }
   };
 
