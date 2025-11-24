@@ -20,3 +20,29 @@ A full-stack job board platform featuring role-based access control, file upload
 - **Storage:** Cloudinary (Resumes)  
 - **Deploy:** Vercel (Frontend) and Render (Backend)
 
+## ⚙️ **Setup Instructions**
+
+### 1. Prerequisites
+
+- Node.js (v18+)  
+- MongoDB Connection String  
+- Cloudinary Account  
+
+### 2. Installation
+
+**Backend:**
+
+```bash
+cd server
+npm install
+# Create .env file (see below)
+npm run dev
+```
+**Frontend:**
+
+```bash
+# from the root
+npm install
+npm run dev
+```
+
