@@ -4,10 +4,10 @@ import { protect, authorize } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
+router.get('/employer/jobs', protect, authorize(['employer']), getEmployerJobs);
 router.get('/', getJobs);
 router.get('/:id/applications', protect, authorize(['employer']), getJobApplications);
 router.post('/', protect, authorize(['employer']), createJob);
-router.get('/employer/jobs', protect, authorize(['employer']), getEmployerJobs);
 router.put('/:id', protect, authorize(['employer']), updateJobs);
 router.delete('/:id', protect, authorize(['employer']), deleteJob);
 router.get('/:id', getJobById);

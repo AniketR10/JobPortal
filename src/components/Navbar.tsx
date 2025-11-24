@@ -8,14 +8,21 @@ export default function Navbar() {
 
   return (
     <nav className="border-b bg-white px-6 py-4 flex justify-between items-center shadow-sm sticky top-0 z-50">
-      <Link to="/" className="text-xl font-bold text-blue-600 flex items-center gap-2">
-        JobBoard<span className="text-slate-800">.io</span>
+      <Link to="/" className="text-xl font-bold text-blue-600 flex items-center">
+        Job<span className="text-slate-800">Orbit</span>
       </Link>
 
       <div className="flex gap-4 items-center">
-        <Link to="/jobs">
-          <Button variant="outline">Browse Jobs</Button>
-        </Link>
+        {user?.role === 'employer' ? (
+          <Link to="/employer/jobs">
+            <Button variant="outline">Browse My Posted Jobs</Button>
+          </Link>
+        ) : (
+          <Link to="/jobs">
+            <Button variant="outline">Browse All Jobs</Button>
+          </Link>
+        )}
+
 
         {user ? (
           <>
