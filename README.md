@@ -1,73 +1,172 @@
-# React + TypeScript + Vite
+# Job Board Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack job board platform featuring role-based access control, file uploads, email notifications, and a dual-dashboard interface for Employers and Candidates.
+ --
 
-Currently, two official plugins are available:
+  <img src="https://github.com/user-attachments/assets/55e06395-69bb-4161-9d2e-38badf81c165"/>
+  Landing Page
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+ <img src="https://github.com/user-attachments/assets/0a782908-5ef5-47a9-a0f5-ad8fdfe6fb96"/>
+ Login Page
+ 
+ <img width="1906" height="886" alt="Pasted image (12)" src="https://github.com/user-attachments/assets/e334ed81-cfcb-4eda-a859-eace9236e7b8" />
+ Browse All Jobs
+ <img width="1906" height="886" alt="image" src="https://github.com/user-attachments/assets/544c92bc-8300-4c45-bc7a-f3be13bab49a" />
 
-## React Compiler
+ Candidate Application Page
+ <img width="1906" height="886" alt="Pasted image (15)" src="https://github.com/user-attachments/assets/ce1d3dc6-3b64-47a0-9548-b3c629015a06" />
+ Employer Dashboard
+<img width="1906" height="886" alt="Pasted image (16)" src="https://github.com/user-attachments/assets/94e4aee8-2321-4a31-9cc4-ef511f956e02" />
+Jobs Posted by Employer
+<img width="1906" height="886" alt="image" src="https://github.com/user-attachments/assets/f41c9bfd-98b1-48e2-b902-1c686529183b" />
+Job Post form
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+## 🚀 **Features**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Authentication:** JWT-based auth with Role-Based Access Control (Employer/Candidate).  
+- **Job Management:** Create, update, delete, and search jobs (Full-text search & filters).  
+- **Application Tracking:**  
+  - **Candidates:** Apply via PDF resume (stored on Cloudinary) and track status on a Kanban board.  
+  - **Employers:** View applicants, download secure resumes, and update status (Screening → Offer).  
+- **Notifications:** Automated emails via Nodemailer when applications are received or status changes.  
+- **Security:** Password hashing, CORS, and protected API routes.  
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠️ **Tech Stack**
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Backend:** Node.js, Express.js, TypeScript  
+- **Database:** MongoDB (Mongoose)  
+- **Frontend:** React, Vite, TailwindCSS, Shadcn/UI  
+- **Storage:** Cloudinary (Resumes)  
+- **Deploy:** Vercel (Frontend) and Render (Backend)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## ⚙️ **Setup Instructions**
+
+### 1. Prerequisites
+
+- Node.js (v18+)  
+- MongoDB Connection String  
+- Cloudinary Account  
+
+### 2. Installation
+
+**Backend:**
+
+```bash
+cd server
+npm install
+# Create .env file (see below)
+npm run dev
+```
+**Frontend:**
+
+```bash
+# from the root
+npm install
+npm run dev
+```
+### 3. Environment Variables (.env)
+
+Create a `.env` file in the `server` folder:
+
+```bash
+PORT=5000
+MONGO_URI=mongodb-atlas-url
+JWT_SECRET=your_secret_key
+CLOUDINARY_CLOUD_NAME=cloud_name
+CLOUDINARY_API_KEY=key
+CLOUDINARY_API_SECRET=secret
+SMTP_EMAIL=audrey29@ethereal.email
+SMTP_PASSWORD=password
+```
+Note: When running frontend locally use 
+```bash 
+baseURL: 'http://localhost:5000/api',
+```
+in src/lib/axios.tsx file.
+
+## 🧪 **Testing Guide (Postman)**
+
+A complete Postman Collection is included in the root directory: `aniket_postman_collection.json`.
+
+**Import Instructions:**
+
+1. Open Postman → Import → Upload `postman_collection.json`.  
+2. The collection uses a variable `{{url}}` which defaults to `http://localhost:5000/api`.  
+3. After logging in, copy the token from the response and paste it into the Collection Variables "current value" for `token`.
+
+## Test Credentials
+Note: You can either use these to test or you can Register and Login your own Candidate and Employer.
+```bash
+| Role       | Email                 | Password    |
+|------------|-----------------------|-------------|
+| Employer   | emp-1@test.com        | 123         |
+| Candidate  | john@test.com         | 987         |
+
+```
+## 📂 Project Architecture
+
+```bash
+├──/                    # React Frontend (root)
+│   ├── src/components/  # Reusable UI components           
+│   ├── src/context/      # Auth State Management
+│   ├── src/lib/        # axios, utils
+│   └── src/pages/    # Dashboard, Jobs, Login pages
+├── server/             # Node.js Backend
+│   ├── src/models/     # Mongoose Schemas (User, Job, Application)
+│   ├── src/controllers/# Business Logic
+│   ├── src/routes/     # API Endpoints
+│   └── src/middleware/ # Auth & Upload Middleware
+│   └── src/utils/      # email service
+├── aniket_postman_collection.json  # postman collection
+└── README.md
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## API Endpoints
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Authentication
+- **POST** `/api/auth/register` - Register a new user (Employer or Candidate)  
+- **POST** `/api/auth/login` - Login and receive a JWT token  
+- **GET** `/api/auth/me` - Get current logged-in user details  
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Jobs
+- **GET** `/api/jobs` - Get all jobs (supports search, filters, pagination)  
+- **GET** `/api/jobs/:id` - Get details of a specific job  
+- **POST** `/api/jobs` - Create a new job posting (Employer only)  
+- **PUT** `/api/jobs/:id` - Update a job posting (Employer only)  
+- **DELETE** `/api/jobs/:id` - Delete a job posting (Employer only)  
+- **GET** `/api/jobs/employer/jobs` - Get all jobs posted by the current employer  
+- **GET** `/api/jobs/:id/applications` - Get all applications for a specific job (Employer only)  
+
+### Applications
+- **POST** `/api/applications` - Apply to a job with a resume (Candidate only)  
+- **GET** `/api/applications/my` - Get all applications for the logged-in candidate  
+- **GET** `/api/applications/employer` - Get all applications received by the logged-in employer  
+- **PUT** `/api/applications/:id/status` - Update application status (e.g., Interview, Offer) (Employer only)  
+- **PUT** `/api/applications/:id/withdraw` - Withdraw an application (Candidate only)  
+
+
+## ⚠️ **Known Limitations & Future Improvements**
+
+While this application meets all core functional requirements, the following limitations exist due to time constraints and the nature of a hackathon/demo environment:
+
+### 1. Email Delivery (Demo Mode)
+- The application currently uses Ethereal Email (fake SMTP service) for testing purposes.  
+- Emails are not delivered to real inboxes. You must check the server console logs for the "Preview URL" to view sent emails.  
+- **Future Fix:** Integrate SendGrid or AWS SES for production email delivery.
+
+### 2. Server Spin-Down (Render Free Tier)
+- The backend is hosted on Render's free tier, which spins down after 15 minutes of inactivity.  
+- The first request might take 30–50 seconds to load while the server wakes up. Please be patient on the initial login.
+
+### 3. Salary Filtering Strategy
+- The salary filter relies on parsing numeric values from the input string (e.g., "$100k+").  
+
+### 4. Real-Time Updates
+- If an employer updates a status, the candidate must refresh the page to see the change on their Kanban board.
+
+### 5. Data Persistence
+- Withdrawing an application permanently deletes the record from the database rather than marking it as withdrawn.
+
+
+
