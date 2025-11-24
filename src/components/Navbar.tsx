@@ -14,7 +14,7 @@ export default function Navbar() {
 
       <div className="flex gap-4 items-center">
         <Link to="/jobs">
-          <Button variant="ghost">Browse Jobs</Button>
+          <Button variant="outline">Browse Jobs</Button>
         </Link>
 
         {user ? (
@@ -32,7 +32,7 @@ export default function Navbar() {
             )}
 
             <div className="flex items-center gap-4 ml-2">
-              <span className="text-sm text-gray-500 hidden md:inline">
+              <span className="text-sm text-gray-700 hidden md:inline">
                 {user.name} ({user.role})
               </span>
               <Button variant="destructive" size="sm" onClick={() => { logout(); navigate('/login'); }}>

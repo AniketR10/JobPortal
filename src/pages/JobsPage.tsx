@@ -20,10 +20,10 @@ export default function JobsPage() {
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
   
-  // Filters
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [location, setLocation] = useState('');
   const [type, setType] = useState('');
+  const [salary, setSalary] = useState('');
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -32,9 +32,10 @@ export default function JobsPage() {
       if (search) params.append('search', search);
       if (location) params.append('location', location);
       if (type) params.append('type', type);
+      if(salary) params.append('salary', salary);
 
       const { data } = await api.get(`/jobs?${params.toString()}`);
-      // Handle backend response structure
+      
       setJobs(data.jobs || data); 
     } catch (error) {
       console.error("Failed to fetch jobs", error);
@@ -45,7 +46,7 @@ export default function JobsPage() {
 
   useEffect(() => {
     fetchJobs();
-  }, []); // Fetch once on mount
+  }, []); 
 
   return (
     <div className="container mx-auto p-6 max-w-5xl min-h-screen">
@@ -53,7 +54,7 @@ export default function JobsPage() {
         <h1 className="text-3xl font-bold tracking-tight">Open Positions</h1>
       </div>
 
-      {/* Search Bar */}
+    
       <Card className="mb-8 p-4">
         <div className="flex flex-col md:flex-row gap-4">
           <Input placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -65,13 +66,27 @@ export default function JobsPage() {
           >
             <option value="">All Types</option>
             <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
             <option value="Remote">Remote</option>
           </select>
+          <select 
+              className="flex h-10 w-full items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-950"
+              value={salary}
+              onChange={(e) => setSalary(e.target.value)}
+            >
+              <option value="">Any Salary</option>
+              <option value="50k">$50k+</option>
+              <option value="100k">$100k+</option>
+              <option value="150k">$150k+</option>
+               <option value="200k">$200k+</option>
+              <option value="300k">$300k+</option>
+              <option value="500k">$500k+</option>
+            </select>
           <Button onClick={fetchJobs}>Filter</Button>
         </div>
       </Card>
 
-      {/* Job Grid */}
+
       {loading ? <div className="text-center">Loading...</div> : (
         <div className="grid gap-4">
           {jobs.map((job) => (

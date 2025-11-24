@@ -15,7 +15,7 @@ export const createJob = async (req: AuthRequest, res: Response) => {
 
 export const getJobs = async (req: AuthRequest, res: Response) => {
     try {
-        const {search, location, type, page = 1, limit = 10} = req.query;
+        const {search, location, type, page = 1, limit = 10, salary} = req.query;
         const query: any = {status: 'open'};
         if(search){
             query.$text = {$search: search as string};
@@ -25,6 +25,9 @@ export const getJobs = async (req: AuthRequest, res: Response) => {
         }
         if(type){
             query.type = type;
+        }
+        if(salary){
+            query.salaryRange = {$regex: salary, $options: 'i'};
         }
 
         //pagination
