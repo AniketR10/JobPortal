@@ -12,7 +12,6 @@ export default function EmployerDashboard() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [applications, setApplications] = useState<any[]>([]);
   const [selectedJob, setSelectedJob] = useState<string>('all');
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -21,16 +20,14 @@ export default function EmployerDashboard() {
         setJobs(data);
       } catch (error) {
         console.error("Error fetching jobs", error);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
     fetchJobs();
   }, []);
 
   useEffect(() => {
     const fetchApps = async () => {
-      setLoading(true);
+      
       try {
         let url = '/applications/employer'; 
         
@@ -42,9 +39,7 @@ export default function EmployerDashboard() {
         setApplications(data);
       } catch (error) {
         console.error(error);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
     
     fetchApps();
