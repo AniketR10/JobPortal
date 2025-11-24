@@ -59,7 +59,7 @@ CLOUDINARY_API_SECRET=secret
 SMTP_EMAIL=audrey29@ethereal.email
 SMTP_PASSWORD=password
 ```
-🧪 **Testing Guide (Postman)**
+## 🧪 **Testing Guide (Postman)**
 
 A complete Postman Collection is included in the root directory: `aniket_postman_collection.json`.
 
@@ -69,3 +69,12 @@ A complete Postman Collection is included in the root directory: `aniket_postman
 2. The collection uses a variable `{{url}}` which defaults to `http://localhost:5000/api`.  
 3. After logging in, copy the token from the response and paste it into the Collection Variables "current value" for `token`.
 
+## Test Credentials
+Note: You can either use these to test or you can Register and Login your own Candidate and Employer.
+```bash
+| Role       | Email                 | Password    |
+|------------|-----------------------|-------------|
+| Employer   | emp-1@test.com        | 123         |
+| Candidate  | john@test.com         | 987         |
+
+```
