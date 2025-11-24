@@ -16,7 +16,7 @@ export default function EmployerDashboard() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const { data } = await api.get('/jobs/employer/jobs');
+        const { data } = await api.get('/api/jobs/employer/jobs');
         setJobs(data);
       } catch (error) {
         console.error("Error fetching jobs", error);
@@ -29,10 +29,10 @@ export default function EmployerDashboard() {
     const fetchApps = async () => {
       
       try {
-        let url = '/applications/employer'; 
+        let url = '/api/applications/employer'; 
         
         if (selectedJob && selectedJob !== 'all') {
-          url = `/jobs/${selectedJob}/applications`;
+          url = `/api/jobs/${selectedJob}/applications`;
         }
 
         const { data } = await api.get(url);
@@ -47,7 +47,7 @@ export default function EmployerDashboard() {
 
   const handleStatusChange = async (appId: string, newStatus: string) => {
     try {
-      await api.put(`/applications/${appId}/status`, { status: newStatus });
+      await api.put(`/api/applications/${appId}/status`, { status: newStatus });
       setApplications(apps => 
         apps.map(app => app._id === appId ? { ...app, status: newStatus } : app)
       );

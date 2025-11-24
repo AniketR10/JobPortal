@@ -27,7 +27,7 @@ export default function LandingPage() {
   useEffect(() => {
   const loadJobs = async () => {
     try {
-      const { data } = await api.get("/jobs?page=1&limit=6"); 
+      const { data } = await api.get("/api/jobs?page=1&limit=6"); 
       setFeaturedJobs(data.jobs);
     } catch (err) {
       console.error(err);

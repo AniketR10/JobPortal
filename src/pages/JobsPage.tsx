@@ -34,7 +34,7 @@ export default function JobsPage() {
       if (type) params.append('type', type);
       if(salary) params.append('salary', salary);
 
-      const { data } = await api.get(`/jobs?${params.toString()}`);
+      const { data } = await api.get(`/api/jobs?${params.toString()}`);
       
       setJobs(data.jobs || data); 
     } catch (error) {

@@ -21,7 +21,7 @@ export default function JobDetailsPage() {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const { data } = await api.get(`/jobs/${id}`);
+        const { data } = await api.get(`/api/jobs/${id}`);
         setJob(data);
       } catch (error) {
         console.error("Error fetching job", error);
@@ -42,7 +42,7 @@ export default function JobDetailsPage() {
     formData.append('resume', resume); 
 
     try {
-      await api.post('/applications', formData, {
+      await api.post('/api/applications', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert("Application Sent Successfully!");

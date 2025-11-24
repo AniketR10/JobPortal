@@ -20,7 +20,7 @@ export default function EmployerJobs() {
 
   const fetchEmployerJobs = async () => {
     try {
-      const { data } = await api.get('/jobs/employer/jobs');
+      const { data } = await api.get('/api/jobs/employer/jobs');
       setJobs(data.jobs || data);
     } catch (err) {
       console.error('Failed to fetch employer jobs', err);
@@ -38,7 +38,7 @@ export default function EmployerJobs() {
     if (!confirmDelete) return;
 
     try {
-      await api.delete(`/jobs/${id}`);
+      await api.delete(`/api/jobs/${id}`);
       setJobs(prev => prev.filter(job => job._id !== id));
     } catch (err) {
       console.error("Failed to delete job", err);

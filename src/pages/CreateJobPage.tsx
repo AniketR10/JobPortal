@@ -27,7 +27,7 @@ export default function CreateJobPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await api.post('/jobs', formData);
+      await api.post('/api/jobs', formData);
       alert("Job Posted Successfully!");
       navigate('/employer/dashboard');
     } catch (error: any) {

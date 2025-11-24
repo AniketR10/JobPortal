@@ -30,7 +30,7 @@ export default function CandidateDashboard() {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const { data } = await api.get('/applications/my');
+        const { data } = await api.get('/api/applications/my');
         setApplications(data);
       } catch (error) {
         console.error("Error fetching applications", error);
@@ -45,7 +45,7 @@ export default function CandidateDashboard() {
     if (!confirm("Are you sure you want to withdraw this application?")) return;
     
     try {
-      await api.put(`/applications/${appId}/withdraw`);
+      await api.put(`/api/applications/${appId}/withdraw`);
       setApplications(prev => prev.filter(app => app._id !== appId));
       alert("Application withdrawn successfully.");
     } catch (error) {
