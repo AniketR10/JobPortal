@@ -40,7 +40,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* Hero Section */}
+    
       <div className="bg-white border-b py-20 px-6">
         <div className="container mx-auto max-w-4xl text-center">
           <h1 className="text-5xl font-bold text-slate-900 mb-6 tracking-tight">
@@ -50,7 +50,7 @@ export default function LandingPage() {
             Browse thousands of jobs from top companies and startups.
           </p>
 
-          {/* Search Box */}
+       
           <Card className="shadow-lg border-0">
             <CardContent className="p-4 flex flex-col md:flex-row gap-4 items-center">
               <div className="relative flex-1 w-full">
@@ -73,7 +73,7 @@ export default function LandingPage() {
             </CardContent>
           </Card>
 
-          {/* Quick Filters */}
+        
           <div className="mt-6 flex flex-wrap justify-center gap-3 text-sm text-slate-600">
             <span>Popular:</span>
             <span className="px-3 py-1 bg-slate-100 rounded-full">Remote</span>
@@ -83,7 +83,6 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* Featured Jobs – Real Jobs */}
       <div className="container mx-auto p-6 max-w-5xl mt-10">
         <h2 className="text-2xl font-bold mb-6">Latest Openings</h2>
 

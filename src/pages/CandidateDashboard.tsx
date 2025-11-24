@@ -71,39 +71,50 @@ export default function CandidateDashboard() {
             </div>
             
             <div className="space-y-3">
-              {getAppsByStatus(col.id).map((app) => (
-                <Card key={app._id} className=" relative shadow-sm bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:bg-slate-100">
-                  <Link 
-                    to={`/jobs/${app.jobId._id}`} 
-                    className="absolute inset-0 z-10"
-                  />
-                  <CardHeader className="p-4 pb-2">
-                    <CardTitle className="text-base font-bold text-slate-800">
-                      {app.jobId?.title || "Unknown Job"}
-                    </CardTitle>
-                    <div className="text-sm text-slate-500 font-medium">
-                      {app.jobId?.company || "Unknown Company"}
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-0">
-                    <div className="text-xs text-slate-400 mt-2">
-                      Applied: {new Date(app.createdAt).toLocaleDateString()}
-                    </div>
-                    {(app.status === 'applied' || app.status === 'screening') && (
-                      <Button 
-                        variant="destructive" 
-                        size="sm" 
-                        className="w-full h-7 text-xs text-gray-50 
-                                 transition-all 
-                                bg-red-500 hover:bg-red-700 hover:cursor-pointer"
-                        onClick={() => handleWithdraw(app._id)}
+              {getAppsByStatus(col.id)
+                  .filter(app => app.jobId) // skip deleted jobs
+                  .map((app) => {
+                    const job = app.jobId;
+
+                    return (
+                      <Card
+                        key={app._id}
+                        className="relative shadow-sm bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:bg-slate-100"
                       >
-                        Withdraw Application
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+                        <Link 
+                          to={`/jobs/${job._id}`} 
+                          className="absolute inset-0 z-10"
+                        />
+
+                        <CardHeader className="p-4 pb-2">
+                          <CardTitle className="text-base font-bold text-slate-800">
+                            {job.title}
+                          </CardTitle>
+                          <div className="text-sm text-slate-500 font-medium">
+                            {job.company}
+                          </div>
+                        </CardHeader>
+
+                        <CardContent className="p-4 pt-0">
+                          <div className="text-xs text-slate-400 mt-2">
+                            Applied: {new Date(app.createdAt).toLocaleDateString()}
+                          </div>
+
+                          {(app.status === 'applied' || app.status === 'screening') && (
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              className="w-full h-7 text-xs text-gray-50 bg-red-500 hover:bg-red-700 hover:cursor-pointer"
+                              onClick={() => handleWithdraw(app._id)}
+                            >
+                              Withdraw Application
+                            </Button>
+                          )}
+                        </CardContent>
+                      </Card>
+                    );
+                  })
+                }
               {getAppsByStatus(col.id).length === 0 && (
                 <div className="text-center text-slate-400 text-xs italic py-4">Empty</div>
               )}

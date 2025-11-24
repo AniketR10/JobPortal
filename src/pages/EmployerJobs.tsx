@@ -33,6 +33,23 @@ export default function EmployerJobs() {
     fetchEmployerJobs();
   }, []);
 
+  const handleDelete = async (id: string) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this job?");
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/jobs/${id}`);
+      setJobs(prev => prev.filter(job => job._id !== id));
+    } catch (err) {
+      console.error("Failed to delete job", err);
+      alert("Failed to delete job");
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployerJobs();
+  }, []);
+
   return (
     <div className="container mx-auto p-6 max-w-5xl min-h-screen">
       <h1 className="text-3xl font-bold mb-6">My Posted Jobs</h1>
@@ -67,10 +84,9 @@ export default function EmployerJobs() {
                 <Button asChild size="sm" variant="default">
                   <Link to={`/jobs/${job._id}`}>View Details</Link>
                 </Button>
-
-                <Button asChild size="sm" variant="outline">
-                  <Link to={`/employer/jobs/edit/${job._id}`}>Edit Job</Link>
-                </Button>
+                 <Button className='cursor-pointer' size="sm" variant="destructive"
+                  onClick={() => handleDelete(job._id)}
+                >Delete</Button>
               </CardFooter>
             </Card>
           ))}
