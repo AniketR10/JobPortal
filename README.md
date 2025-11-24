@@ -121,3 +121,52 @@ Note: You can either use these to test or you can Register and Login your own Ca
 ├── aniket_postman_collection.json  # postman collection
 └── README.md
 ```
+
+## API Endpoints
+
+### Authentication
+- **POST** `/api/auth/register` - Register a new user (Employer or Candidate)  
+- **POST** `/api/auth/login` - Login and receive a JWT token  
+- **GET** `/api/auth/me` - Get current logged-in user details  
+
+### Jobs
+- **GET** `/api/jobs` - Get all jobs (supports search, filters, pagination)  
+- **GET** `/api/jobs/:id` - Get details of a specific job  
+- **POST** `/api/jobs` - Create a new job posting (Employer only)  
+- **PUT** `/api/jobs/:id` - Update a job posting (Employer only)  
+- **DELETE** `/api/jobs/:id` - Delete a job posting (Employer only)  
+- **GET** `/api/jobs/employer/jobs` - Get all jobs posted by the current employer  
+- **GET** `/api/jobs/:id/applications` - Get all applications for a specific job (Employer only)  
+
+### Applications
+- **POST** `/api/applications` - Apply to a job with a resume (Candidate only)  
+- **GET** `/api/applications/my` - Get all applications for the logged-in candidate  
+- **GET** `/api/applications/employer` - Get all applications received by the logged-in employer  
+- **PUT** `/api/applications/:id/status` - Update application status (e.g., Interview, Offer) (Employer only)  
+- **PUT** `/api/applications/:id/withdraw` - Withdraw an application (Candidate only)  
+
+
+## ⚠️ **Known Limitations & Future Improvements**
+
+While this application meets all core functional requirements, the following limitations exist due to time constraints and the nature of a hackathon/demo environment:
+
+### 1. Email Delivery (Demo Mode)
+- The application currently uses Ethereal Email (fake SMTP service) for testing purposes.  
+- Emails are not delivered to real inboxes. You must check the server console logs for the "Preview URL" to view sent emails.  
+- **Future Fix:** Integrate SendGrid or AWS SES for production email delivery.
+
+### 2. Server Spin-Down (Render Free Tier)
+- The backend is hosted on Render's free tier, which spins down after 15 minutes of inactivity.  
+- The first request might take 30–50 seconds to load while the server wakes up. Please be patient on the initial login.
+
+### 3. Salary Filtering Strategy
+- The salary filter relies on parsing numeric values from the input string (e.g., "$100k+").  
+
+### 4. Real-Time Updates
+- If an employer updates a status, the candidate must refresh the page to see the change on their Kanban board.
+
+### 5. Data Persistence
+- Withdrawing an application permanently deletes the record from the database rather than marking it as withdrawn.
+
+
+
