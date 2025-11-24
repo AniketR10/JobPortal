@@ -45,4 +45,27 @@ npm run dev
 npm install
 npm run dev
 ```
+### 3. Environment Variables (.env)
+
+Create a `.env` file in the `server` folder:
+
+```bash
+PORT=5000
+MONGO_URI=mongodb-atlas-url
+JWT_SECRET=your_secret_key
+CLOUDINARY_CLOUD_NAME=cloud_name
+CLOUDINARY_API_KEY=key
+CLOUDINARY_API_SECRET=secret
+SMTP_EMAIL=audrey29@ethereal.email
+SMTP_PASSWORD=password
+```
+🧪 **Testing Guide (Postman)**
+
+A complete Postman Collection is included in the root directory: `aniket_postman_collection.json`.
+
+**Import Instructions:**
+
+1. Open Postman → Import → Upload `postman_collection.json`.  
+2. The collection uses a variable `{{url}}` which defaults to `http://localhost:5000/api`.  
+3. After logging in, copy the token from the response and paste it into the Collection Variables "current value" for `token`.
 
