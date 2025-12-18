@@ -41,7 +41,9 @@ export default function CandidateDashboard() {
     fetchApplications();
   }, []);
 
-    const handleWithdraw = async (appId: string) => {
+    const handleWithdraw = async (e: React.MouseEvent, appId: string) => {
+      e.preventDefault();
+      e.stopPropagation();
     if (!confirm("Are you sure you want to withdraw this application?")) return;
     
     try {
@@ -77,41 +79,42 @@ export default function CandidateDashboard() {
                     const job = app.jobId;
 
                     return (
-                      <Card
-                        key={app._id}
-                        className="relative shadow-sm bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:bg-slate-100"
-                      >
-                        <Link 
-                          to={`/jobs/${job._id}`} 
-                          className="absolute inset-0 z-10"
-                        />
+                           <div key={app._id} className="relative group"> {/* Wrapped in a div */}
+                        <Link to={`/jobs/${job._id}`} className="block"> {/* Link wraps the card content */}
+                          <Card
+                            className="shadow-sm bg-white cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:bg-slate-100 border-l-4 border-l-blue-500"
+                          >
+                            <CardHeader className="p-4 pb-2">
+                              <CardTitle className="text-base font-bold text-slate-800">
+                                {job.title}
+                              </CardTitle>
+                              <div className="text-sm text-slate-500 font-medium">
+                                {job.company}
+                              </div>
+                            </CardHeader>
 
-                        <CardHeader className="p-4 pb-2">
-                          <CardTitle className="text-base font-bold text-slate-800">
-                            {job.title}
-                          </CardTitle>
-                          <div className="text-sm text-slate-500 font-medium">
-                            {job.company}
-                          </div>
-                        </CardHeader>
-
-                        <CardContent className="p-4 pt-0">
-                          <div className="text-xs text-slate-400 mt-2">
-                            Applied: {new Date(app.createdAt).toLocaleDateString()}
-                          </div>
-
-                          {(app.status === 'applied' || app.status === 'screening') && (
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              className="w-full h-7 text-xs text-gray-50 bg-red-500 hover:bg-red-700 hover:cursor-pointer"
-                              onClick={() => handleWithdraw(app._id)}
-                            >
-                              Withdraw Application
-                            </Button>
-                          )}
-                        </CardContent>
-                      </Card>
+                            <CardContent className="p-4 pt-0">
+                              <div className="text-xs text-slate-400 mt-2 mb-3">
+                                Applied: {new Date(app.createdAt).toLocaleDateString()}
+                              </div>
+                              
+                              {/* Button is rendered here but event propagation is stopped */}
+                              {(app.status === 'applied' || app.status === 'screening') && (
+                                <div className="mt-2">
+                                   <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    className="w-full h-7 text-xs text-white bg-red-500 hover:bg-red-700 transition-opacity opacity-0 group-hover:opacity-100"
+                                    onClick={(e) => handleWithdraw(e, app._id)}
+                                  >
+                                    Withdraw Application
+                                  </Button>
+                                </div>
+                              )}
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      </div>
                     );
                   })
                 }
