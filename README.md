@@ -1,25 +1,7 @@
 # Job Board Application
 
 A full-stack job board platform featuring role-based access control, file uploads, email notifications, and a dual-dashboard interface for Employers and Candidates.
- --
-
-  <img src="https://github.com/user-attachments/assets/55e06395-69bb-4161-9d2e-38badf81c165"/>
-  Landing Page
-
- <img src="https://github.com/user-attachments/assets/0a782908-5ef5-47a9-a0f5-ad8fdfe6fb96"/>
- Login Page
- 
- <img width="1906" height="886" alt="Pasted image (12)" src="https://github.com/user-attachments/assets/e334ed81-cfcb-4eda-a859-eace9236e7b8" />
- Browse All Jobs
- <img width="1906" height="886" alt="image" src="https://github.com/user-attachments/assets/544c92bc-8300-4c45-bc7a-f3be13bab49a" />
-
- Candidate Application Page
- <img width="1906" height="886" alt="Pasted image (15)" src="https://github.com/user-attachments/assets/ce1d3dc6-3b64-47a0-9548-b3c629015a06" />
- Employer Dashboard
-<img width="1906" height="886" alt="Pasted image (16)" src="https://github.com/user-attachments/assets/94e4aee8-2321-4a31-9cc4-ef511f956e02" />
-Jobs Posted by Employer
-<img width="1906" height="886" alt="image" src="https://github.com/user-attachments/assets/f41c9bfd-98b1-48e2-b902-1c686529183b" />
-Job Post form
+<img width="1912" height="893" alt="image" src="https://github.com/user-attachments/assets/1a2f999e-8fc5-4502-ab6c-3c069c31054a" />
 
 
 ## 🚀 **Features**
